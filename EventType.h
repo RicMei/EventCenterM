@@ -13,9 +13,9 @@
 #include <functional>
 
 enum class EventType{
-	et_null,
-	et_end_build_level_up, //升级结束
-	et_end_train,			//训练结束
+	null,
+	end_build_level_up, //升级结束
+	end_train,			//训练结束
 };
 
 template<EventType et, typename EventFunc>
@@ -24,7 +24,10 @@ struct EventDef{
 	typedef EventFunc perform_type;
 };
 
-typedef EventDef<EventType::et_end_build_level_up, std::function<void(int, std::string)> > Event_Levelup;
-typedef EventDef<EventType::et_end_train, std::function<void(int, int, std::string)>> Event_EndTrain;
+#define TIE_EVENT_SELECTOR( et , ft ) typedef EventDef<EventType::##et##,std::function<##ft##> > event_##et;
+
+
+TIE_EVENT_SELECTOR(end_build_level_up, void(int, std::string))
+TIE_EVENT_SELECTOR(end_train, void(int, int, std::string))
 
 #endif //FILE_DEF_EVENTTYPE_H_

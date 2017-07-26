@@ -85,7 +85,7 @@ private:
 
 
 template<typename ObserverWrapperType>
-class ObserverWrapperContainer : public singleton_default<ObserverWrapperContainer<ObserverWrapperType>> {
+class ObserverWrapperContainer : public Singleton<ObserverWrapperContainer<ObserverWrapperType>> {
 public:
 	typedef ObserverWrapper<ObserverWrapperType> DataType;
 public:

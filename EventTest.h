@@ -47,32 +47,33 @@ public:
 		
 		do{
 			DeallocTest de;
-			g_event_center.subscribe<Event_Levelup>(de, std::bind(&DeallocTest::OnLevelupx, de, std::placeholders::_1, std::placeholders::_2));
+			g_event_center.subscribe<event_end_build_level_up>(de, std::bind(&DeallocTest::OnLevelupx, de, std::placeholders::_1, std::placeholders::_2));
+// 
+			g_event_center.notify<event_end_build_level_up>(1, "aaa");
+ 			g_event_center.notify<event_end_train>(1, 2, "aaa");
+			g_event_center.unsubscribe<event_end_build_level_up>(Observer::id());
+			g_event_center.notify<event_end_build_level_up>(2, "bbb");
+			g_event_center.notify<event_end_train>(2, 3, "bbb");
+			g_event_center.unsubscribe<event_end_train>(Observer::id());
+			g_event_center.notify<event_end_build_level_up>(3, "ccc");
+			g_event_center.notify<event_end_train>(3, 4, "ccc");
 
-			g_event_center.notify<Event_Levelup>(1, "aaa");
-			g_event_center.notify<Event_EndTrain>(1, 2, "aaa");
-			g_event_center.unsubscribe<Event_Levelup>(Observer::id());
-			g_event_center.notify<Event_Levelup>(2, "bbb");
-			g_event_center.notify<Event_EndTrain>(2, 3, "bbb");
-			g_event_center.unsubscribe<Event_EndTrain>(Observer::id());
-			g_event_center.notify<Event_Levelup>(3, "ccc");
-			g_event_center.notify<Event_EndTrain>(3, 4, "ccc");
 		} while (false);
 
-		g_event_center.notify<Event_Levelup>(4, "ddd");
-		g_event_center.notify<Event_EndTrain>(4, 5, "ddd");
+		g_event_center.notify<event_end_build_level_up>(4, "ddd");
+		g_event_center.notify<event_end_train>(4, 5, "ddd");
 	}
 public:
 	virtual void regist_event_handler() override
 	{
-		g_event_center.subscribe<Event_Levelup>(*this,std::bind(&EventTest::OnLevelup, this, std::placeholders::_1, std::placeholders::_2));
-		g_event_center.subscribe<Event_EndTrain>(*this, std::bind(&EventTest::OnEndTrain, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		g_event_center.subscribe<event_end_build_level_up>(*this, std::bind(&EventTest::OnLevelup, this, std::placeholders::_1, std::placeholders::_2));
+		g_event_center.subscribe<event_end_train>(*this, std::bind(&EventTest::OnEndTrain, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
 
 	virtual void unregist_event_handler() override
 	{
-		g_event_center.unsubscribe<Event_Levelup>(Observer::id());
-		g_event_center.unsubscribe<Event_EndTrain>(Observer::id());
+		g_event_center.unsubscribe<event_end_build_level_up>(Observer::id());
+		g_event_center.unsubscribe<event_end_train>(Observer::id());
 	}
 };
 
