@@ -48,20 +48,26 @@ public:
 		do{
 			DeallocTest de;
 			g_event_center.subscribe<event_end_build_level_up>(de, std::bind(&DeallocTest::OnLevelupx, de, std::placeholders::_1, std::placeholders::_2));
-// 
-			g_event_center.notify<event_end_build_level_up>(1, "aaa");
- 			g_event_center.notify<event_end_train>(1, 2, "aaa");
+
+			g_event_center.notify_all<event_end_build_level_up>(1, "aaa");
+			g_event_center.notify_all<event_end_train>( 1, 2, "aaa");
+
+			// test notify to object
+			g_event_center.notify_to<event_end_build_level_up>(&de, 5, "eee");
+
 			g_event_center.unsubscribe<event_end_build_level_up>(Observer::id());
-			g_event_center.notify<event_end_build_level_up>(2, "bbb");
-			g_event_center.notify<event_end_train>(2, 3, "bbb");
+			g_event_center.notify_all<event_end_build_level_up>( 2, "bbb");
+			g_event_center.notify_all<event_end_train>( 2, 3, "bbb");
 			g_event_center.unsubscribe<event_end_train>(Observer::id());
-			g_event_center.notify<event_end_build_level_up>(3, "ccc");
-			g_event_center.notify<event_end_train>(3, 4, "ccc");
+			g_event_center.notify_all<event_end_build_level_up>( 3, "ccc");
+			g_event_center.notify_all<event_end_train>( 3, 4, "ccc");
+
+
 
 		} while (false);
 
-		g_event_center.notify<event_end_build_level_up>(4, "ddd");
-		g_event_center.notify<event_end_train>(4, 5, "ddd");
+		g_event_center.notify_all<event_end_build_level_up>( 4, "ddd");
+		g_event_center.notify_all<event_end_train>( 4, 5, "ddd");
 	}
 public:
 	virtual void regist_event_handler() override

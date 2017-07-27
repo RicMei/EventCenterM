@@ -15,10 +15,15 @@
 #include "EventType.h"
 #include <algorithm>
 #include "Singleton.h"
+class ObserverWrapperBase;
+
+template<typename ObserverWrapperType>
+class ObserverWrapper;
 
 class ObserverWrapperBase{
 public:
 	explicit ObserverWrapperBase(EventType _type) :type_(_type){}
+	virtual ~ObserverWrapperBase(){};
 	inline EventType etype() const { return type_; }
 private:
 	EventType type_;
@@ -37,6 +42,18 @@ public:
 	virtual void unregist_event_handler() = 0;
 public:
 	inline uint64_t id(){ return id_; }
+
+	template <typename ObserverWrapperType,typename ...Args>
+	void perform(Args ... args){
+		typedef ObserverWrapper<ObserverWrapperType> DataType;
+		for (auto itr : vector_){
+			if (itr->etype() == ObserverWrapperType::event_type){
+				if (auto casted_ptr = std::dynamic_pointer_cast<DataType>((itr))){
+					casted_ptr->pr()(args...);
+				}
+			}
+		}
+	}
 
 	inline void add_wraper(std::shared_ptr<ObserverWrapperBase>  _wrapper_ptr){
 		if (std::find_if(vector_.begin(), vector_.end(), [&_wrapper_ptr](std::shared_ptr<ObserverWrapperBase> wrapper_ptr){

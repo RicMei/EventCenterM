@@ -32,8 +32,14 @@ public:
 	}
 public:
 	template<class ObserverWrapperType, typename ...Args>
-	void notify(Args ...args){
-		ObserverWrapperContainer<ObserverWrapperType>::instance().perform(args ...);
+	void notify_to( Observer * target ,Args ...args){
+		if (target)
+			target->perform<ObserverWrapperType>(args...);			
+	}
+
+	template<class ObserverWrapperType, typename ...Args>
+	void notify_all(Args ...args){
+			ObserverWrapperContainer<ObserverWrapperType>::instance().perform(args ...);
 	}
 };
 
