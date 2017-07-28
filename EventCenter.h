@@ -27,8 +27,9 @@ public:
 		ObserverWrapperContainer<ObserverWrapperType>::instance().add(wrapper_ptr);
 	}
 	template<typename ObserverWrapperType>
-	void unsubscribe(uint64_t _observer_id){
-		ObserverWrapperContainer<ObserverWrapperType>::instance().del(_observer_id);
+	void unsubscribe(Observer& observer){
+		//ObserverWrapperContainer<ObserverWrapperType>::instance().del(_observer_id);
+		observer.del_wrapper(ObserverWrapperType::event_type);
 	}
 public:
 	template<class ObserverWrapperType, typename ...Args>

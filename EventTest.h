@@ -55,10 +55,11 @@ public:
 			// test notify to object
 			g_event_center.notify_to<event_end_build_level_up>(&de, 5, "eee");
 
-			g_event_center.unsubscribe<event_end_build_level_up>(Observer::id());
+			g_event_center.unsubscribe<event_end_build_level_up>(*this);
 			g_event_center.notify_all<event_end_build_level_up>( 2, "bbb");
 			g_event_center.notify_all<event_end_train>( 2, 3, "bbb");
-			g_event_center.unsubscribe<event_end_train>(Observer::id());
+
+			g_event_center.unsubscribe<event_end_train>(*this);
 			g_event_center.notify_all<event_end_build_level_up>( 3, "ccc");
 			g_event_center.notify_all<event_end_train>( 3, 4, "ccc");
 
@@ -78,8 +79,8 @@ public:
 
 	virtual void unregist_event_handler() override
 	{
-		g_event_center.unsubscribe<event_end_build_level_up>(Observer::id());
-		g_event_center.unsubscribe<event_end_train>(Observer::id());
+		g_event_center.unsubscribe<event_end_build_level_up>(*this);
+		g_event_center.unsubscribe<event_end_train>(*this);
 	}
 };
 

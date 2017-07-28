@@ -108,16 +108,15 @@ public:
 public:
 	template<typename ...Args>
 	void perform(Args ...args){
-		std::vector<std::weak_ptr< DataType>> copy_container(observer_all_.begin(), observer_all_.end());
-			for (auto itr = copy_container.begin(); itr != copy_container.end(); itr++){
+			for (auto itr = observer_all_.begin(); itr != observer_all_.end(); ){
 				if (auto observer_wrapper_ptr = itr->lock()){
 					observer_wrapper_ptr->pr()(args...);
+					itr++;
+				}
+				else{
+					itr = observer_all_.erase(itr);
 				}
 			}
-			//remove all expired
-			observer_all_.erase(std::remove_if(observer_all_.begin(), observer_all_.end(), [](const std::weak_ptr< DataType> wrap_wptr){
-				return !wrap_wptr.lock();
-			}), observer_all_.end());
 	}
 	void add( std::shared_ptr<DataType> _d ){
 		if (_d->get()){
@@ -133,21 +132,6 @@ public:
 		}
 	}
 
-	void del(uint64_t _id){
-		for (auto itr = observer_all_.begin(); itr != observer_all_.end();){
-			auto dp = itr->lock();
-			if (dp && dp->id() != _id){
-				itr++;
-				continue;
-			}
-			if (dp){
-				if (auto observer_ptr = dp->get()){
-					observer_ptr->del_wrapper( dp->etype() );
-				}
-			}
-			itr = observer_all_.erase(itr);
-		}
-	}
 private:
 	std::vector< std::weak_ptr<DataType >> observer_all_;
 };
