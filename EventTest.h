@@ -53,7 +53,7 @@ public:
 			g_event_center.notify_all<event_end_train>( 1, 2, "aaa");
 
 			// test notify to object
-			g_event_center.notify_to<event_end_build_level_up>(&de, 5, "eee");
+			g_event_center.notify_to<event_end_build_level_up>(de, 5, "eee");
 
 			g_event_center.unsubscribe<event_end_build_level_up>(*this);
 			g_event_center.notify_all<event_end_build_level_up>( 2, "bbb");

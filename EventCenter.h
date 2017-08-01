@@ -28,14 +28,12 @@ public:
 	}
 	template<typename ObserverWrapperType>
 	void unsubscribe(Observer& observer){
-		//ObserverWrapperContainer<ObserverWrapperType>::instance().del(_observer_id);
 		observer.del_wrapper(ObserverWrapperType::event_type);
 	}
 public:
 	template<class ObserverWrapperType, typename ...Args>
-	void notify_to( Observer * target ,Args ...args){
-		if (target)
-			target->perform<ObserverWrapperType>(args...);			
+	void notify_to( Observer & target ,Args ...args){
+		target.perform<ObserverWrapperType>(args...);			
 	}
 
 	template<class ObserverWrapperType, typename ...Args>
