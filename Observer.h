@@ -55,7 +55,7 @@ public:
 		}
 	}
 
-	inline void add_wraper(std::shared_ptr<ObserverWrapperBase>  _wrapper_ptr){
+	inline void add_wrapper(std::shared_ptr<ObserverWrapperBase>  _wrapper_ptr){
 		if (std::find_if(vector_.begin(), vector_.end(), [&_wrapper_ptr](std::shared_ptr<ObserverWrapperBase> wrapper_ptr){
 			return wrapper_ptr->etype() == _wrapper_ptr->etype();
 		}) == vector_.end()){
@@ -127,7 +127,7 @@ public:
 				return  false;
 			}) == observer_all_.end()){
 				observer_all_.emplace_back(_d);
-				_d->get()->add_wraper(_d);
+				_d->get()->add_wrapper(_d);
 			}
 		}
 	}
