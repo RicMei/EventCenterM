@@ -1,5 +1,5 @@
 # EventCenterM
-a observer patten template 
+an observer patten template 
 
 useage:
  add an event enum in EventType.h EventType
