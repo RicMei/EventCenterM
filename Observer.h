@@ -15,6 +15,7 @@
 #include "EventType.h"
 #include <algorithm>
 #include "Singleton.h"
+#include <list>
 class ObserverWrapperBase;
 
 template<typename ObserverWrapperType>
@@ -133,7 +134,7 @@ public:
 	}
 
 private:
-	std::vector< std::weak_ptr<DataType >> observer_all_;
+	std::list< std::weak_ptr<DataType >> observer_all_;
 };
 
 #endif //FILE_DEF_OBSERVER_H_
